@@ -1,72 +1,82 @@
 # Pink Almond — IJS & GEBAK bij MO
 
-Eenvoudige bestelwebsite voor Pink Almond, de ijs-, gebak- en koffiezaak van Mo.
-Gebouwd als één HTML-bestand: alles werkt zonder server, alle data wordt veilig in de browser opgeslagen.
+Bestelwebsite voor Pink Almond, de ijs-, gebak- en koffiezaak van Mo.
 
-## Wat zit erin?
+Er zijn nu **twee versies** in deze repo, zodat je rustig kunt vergelijken voor we definitief overstappen:
 
-- **Voor klanten** — homepage met Mo's foto en quote, volledige menukaart, online bestelflow met ijs-configurator (smaken, hoorntje/bakje, slagroom, wafel) en winkelmand.
-- **Voor Mo (achter de schermen)** — beveiligd met pincode (standaard `1234`):
-  - Dashboard met aantal bestellingen, totale omzet, top-producten en verdeling per categorie. Filterbaar op vandaag / week / maand / alles.
-  - Kassa-modus voor snelle invoer aan de balie.
-  - Bestellingen-overzicht met statussen (open / klaar / voldaan).
-  - CSV-export voor de administratie.
-  - Instellingen: pincode wijzigen, demo-data laden, alles wissen.
+| Versie | URL (lokaal) | URL (live, na push) | Wat? |
+| --- | --- | --- | --- |
+| **v1** | `index.html` | `https://marnixvanroyen.github.io/pink-almond/` | De originele single-file versie |
+| **v2** | `v2/index.html` | `https://marnixvanroyen.github.io/pink-almond/v2/` | Nieuwe modulaire versie, geïnspireerd op de Kapitein-Jack-opzet |
 
-## Hoe te openen
+## Wat is er nieuw in v2?
 
-Dubbelklik op `index.html`. De website opent in je browser. Geen installatie nodig.
+- **Modulaire bestandsstructuur** — gescheiden HTML, CSS en JavaScript. Aparte `index.html` voor klanten en `admin.html` voor personeel.
+- **Mo kan zelf het menu beheren** — items, categorieën, prijzen en smaken toevoegen / wijzigen / verwijderen via de admin-pagina. Geen code aanraken meer.
+- **Eenvoudige bestelstatus** — open → voldaan. Eén knop ✅ Voldaan om af te ronden. Geen bereidingstijd-gedoe, geen meldingen, geen geluiden.
+- **Echte grafieken** met Chart.js: aantal bestellingen + omzet per dag / week / maand / jaar.
+- **Mobile-first** met sticky categorie-dropdown en scroll-spy. Werkt fijn op je telefoon.
+- **Bestelnummer als `PA-0001`** (oplopend), klantvriendelijker dan willekeurige codes.
+- **Eenvoudige bestelflow** — klant kiest items en vult alleen z'n naam in. Geen ophaaltijd, geen telefoonnummer, geen verplichte velden.
+- **Cross-tab sync** — wijzigt Mo het menu in tab 1, dan ziet de klant in tab 2 dat meteen.
 
-> **Belangrijk:** laat `index.html` in dezelfde map staan als de foto's `mo.jpeg`, `gevel.jpeg`, `interieur.jpeg`. Die worden direct vanuit de map geladen.
+## Mappenstructuur (v2)
 
-## Eerste keer proberen
+```
+v2/
+├── index.html          ← klant-bestelpagina
+├── admin.html          ← personeels-portaal (PIN-beveiligd)
+├── css/
+│   └── style.css       ← alle styling (klant + admin)
+└── js/
+    ├── menu-data.js    ← producten, smaken, prijzen als pure data
+    ├── app.js          ← klant-logica
+    └── admin.js        ← admin-logica (bestellingen, menu-editor, charts)
+```
 
-1. Open `index.html` in je browser.
-2. Klik rechtsboven op **🔒 Personeel** en vul `1234` in.
-3. Ga naar **Instellingen → Demo-data laden** voor een paar voorbeeld-bestellingen.
-4. Bekijk **Dashboard** — je ziet meteen de omzet en top-producten.
-5. Klik op de **Pink Almond** logo om terug te gaan naar de winkel-kant en plaats een echte test-bestelling.
+De foto's (`mo.jpeg`, `gevel.jpeg`, `interieur.jpeg`) blijven in de hoofdmap. v2 verwijst er relatief naar via `../mo.jpeg`.
+
+## Hoe te openen (lokaal)
+
+Dubbelklik op `v2/index.html` of `index.html`. Geen installatie nodig.
+
+> Belangrijk: laat de foto's in dezelfde map staan als `index.html` (oude versie) of in de map ernaast (`v2/` opent ze één map omhoog).
+
+## Eerste keer proberen (v2)
+
+1. Open `v2/index.html` in je browser.
+2. Klik rechtsboven op **🔒 Personeel** — pincode is **`1234`**.
+3. Ga naar **Instellingen → + Demo-data** voor zes voorbeeld-bestellingen.
+4. Bekijk **📋 Bestellingen** (een nieuwe heeft een rode rand!), **📊 Overzicht** (echte grafiekjes) en **🍦 Menu** (zelf items toevoegen).
+5. Ga terug via "→ Naar winkel" en plaats een echte test-bestelling.
 
 ## Live online (GitHub Pages)
 
-Deze repo is geconfigureerd voor [GitHub Pages](https://pages.github.com/). Zodra Pages aanstaat, is de site bereikbaar op:
+Beide versies worden mee-gepushed. Pages bedient ze allebei:
 
-```
-https://<jouw-github-naam>.github.io/pink-almond/
-```
+- v1: https://marnixvanroyen.github.io/pink-almond/
+- v2: https://marnixvanroyen.github.io/pink-almond/v2/
 
-Mo kan de link op haar telefoon openen — geen installatie nodig.
+Wanneer Mo v2 leuk vindt, kunnen we `index.html` en de oude versie verwijderen en alleen v2 behouden — of v2 naar de root verplaatsen.
 
 ## Aanpassen voor de echte winkel
 
-Open `index.html` in een tekstbewerker (bijv. VS Code, TextEdit of Notepad++) en zoek naar:
+In v2 hoeft Mo (bijna) niets meer in code aan te raken:
 
-| Wat? | Waar in het bestand? |
+| Wat? | Waar? |
 | --- | --- |
-| Smaken (8 stuks) | `const SMAKEN = [...]` |
-| Producten en prijzen | `const PRODUCTS = { ... }` |
-| Slagroom-prijs | `const SLAGROOM_PRICE` |
-| Wafel-prijs | `const WAFEL_PRICE` |
-| Adres / telefoon | Zoek op `(adres invullen)` |
-| Openingstijden | Zoek op `Openingstijden` |
-| Pincode standaard | `STORAGE_PIN` (kan ook in-app via Instellingen) |
+| Items, prijzen, categorieën, smaken | Admin → 🍦 Menu |
+| Pincode | Admin → ⚙️ Instellingen |
+| Demo-data | Admin → ⚙️ Instellingen |
+| Adres / openingstijden / telefoon | Nog handmatig in `v2/index.html` |
+| Logo / kleuren | `v2/css/style.css` (CSS-variabelen bovenin) |
 
-Sla het bestand op, ververs de browser — klaar.
+## Technische beperkingen (eerlijk verhaal)
 
-## Hoe is het gemaakt?
-
-- Eén bestand: `index.html` met HTML, CSS en JavaScript samen.
-- Geen frameworks, geen build-stap. Vanilla JavaScript.
-- Data-opslag via `localStorage` (per apparaat / browser).
-- Lettertypes uit Google Fonts (Fredoka + Quicksand).
-- Logo en iconen in pure SVG.
-
-## Belangrijke beperkingen (eerlijk verhaal)
-
-- **Data per apparaat.** Bestellingen die op de iPad worden geplaatst, zie je niet op de laptop — alle data zit in de browser waar de bestelling is gedaan. Voor één werkplek is dit ideaal; voor meerdere apparaten samen heb je later een back-end nodig.
+- **Data per apparaat / browser.** Alle bestellingen en menu-wijzigingen leven in `localStorage`. Test op één apparaat = OK; meerdere apparaten in de winkel die elkaar moeten zien = backend nodig (Supabase of vergelijkbaar). Dit is **fase 2**.
 - **Geen online betaling.** Klanten betalen in de winkel.
-- **CSV regelmatig exporteren** als back-up — als de browser-cache wordt gewist, verdwijnen de bestellingen.
+- **CSV regelmatig exporteren** als back-up.
 
 ## Licentie
 
-Eigen project van Pink Almond / Mo. Gemaakt met liefde.
+Eigen project van Pink Almond / Mo. Gemaakt met liefde 🍦.

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pink Almond — Personeel</title>
+<meta name="theme-color" content="#1d3a4a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="admin">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="logo-pinkalmond" viewBox="0 0 360 70">
+      <text x="0" y="50" font-family="Fredoka, Quicksand, sans-serif" font-weight="700" font-size="50" fill="#f7c7d6">Pink</text>
+      <g transform="translate(118, 0)">
+        <path d="M20 10 L40 50 L0 50 Z" fill="#f4c430" stroke="#1d3a4a" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M14 22 L26 22 M10 32 L30 32 M5 44 L35 44 M20 10 L1 50 M20 10 L39 50 M14 22 L26 44 M26 22 L14 44 M20 10 L20 50"
+              stroke="#1d3a4a" stroke-width="1.4" fill="none" opacity=".5" stroke-linecap="round"/>
+        <circle cx="20" cy="60" r="10" fill="#f5e9d3" stroke="#1d3a4a" stroke-width="2"/>
+      </g>
+      <text x="170" y="50" font-family="Fredoka, Quicksand, sans-serif" font-weight="700" font-size="50" fill="#f5e9d3">lmond</text>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="site">
+  <div class="inner">
+    <a class="brand" href="index.html" aria-label="Pink Almond">
+      <svg class="brand-logo" viewBox="0 0 360 70"><use href="#logo-pinkalmond"/></svg>
+      <span class="brand-tag">Personeel</span>
+    </a>
+    <div class="row" style="gap:6px">
+      <button class="btn btn-ghost btn-sm" id="refresh-btn">↻ Vernieuwen</button>
+      <a class="btn btn-ghost btn-sm" href="index.html">→ Naar winkel</a>
+    </div>
+  </div>
+</header>
+<div class="tri-strip" aria-hidden="true"></div>
+
+<main class="container section">
+
+  <!-- PIN-screen -->
+  <div class="pin-screen" id="pin-screen">
+    <h2>🔒 Personeel</h2>
+    <p class="muted">Voer de pincode in om verder te gaan.</p>
+    <input id="pin-input" type="password" inputmode="numeric" maxlength="6" placeholder="••••">
+    <div class="row" style="justify-content:center; margin-top:12px">
+      <button class="btn btn-primary" id="pin-submit">Inloggen</button>
+    </div>
+    <small class="muted" style="display:block; margin-top:14px">Standaardpincode: <strong>1234</strong> · Wijzig via Instellingen.</small>
+  </div>
+
+  <!-- Admin panel (na inloggen) -->
+  <div id="admin-panel" style="display:none">
+
+    <div class="row-between" style="margin-bottom:14px">
+      <div>
+        <span class="pill">Backoffice</span>
+        <h2 style="margin:6px 0 0">Welkom terug, Mo 👋</h2>
+      </div>
+      <button class="btn btn-ghost btn-sm" id="logout-btn">Uitloggen</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="admin-stats">
+      <div class="stat-card"><div class="stat-card__value" id="stat-new">0</div><div class="stat-card__label">Openstaande orders</div></div>
+      <div class="stat-card"><div class="stat-card__value" id="stat-today-count">0</div><div class="stat-card__label">Vandaag totaal</div></div>
+      <div class="stat-card"><div class="stat-card__value" id="stat-today-revenue">€ 0</div><div class="stat-card__label">Omzet vandaag</div></div>
+      <div class="stat-card"><div class="stat-card__value" id="stat-menu-items">0</div><div class="stat-card__label">Items op menu</div></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="admin-tabs" id="admin-tabs">
+      <button class="admin-tab is-active" data-tab="orders">📋 Bestellingen</button>
+      <button class="admin-tab" data-tab="kassa">💳 Kassa</button>
+      <button class="admin-tab" data-tab="menu">🍦 Menu</button>
+      <button class="admin-tab" data-tab="overview">📊 Overzicht</button>
+      <button class="admin-tab" data-tab="settings">⚙️ Instellingen</button>
+    </div>
+
+    <!-- ORDERS TAB -->
+    <section class="tab-content" id="pane-orders">
+      <div class="row-between" style="margin-bottom:12px">
+        <div class="row" style="gap:6px">
+          <button class="admin-tab is-active" data-orders-filter="open">Open</button>
+          <button class="admin-tab" data-orders-filter="today">Vandaag</button>
+          <button class="admin-tab" data-orders-filter="all">Alle</button>
+        </div>
+      </div>
+      <div id="orders-list"></div>
+    </section>
+
+    <!-- KASSA TAB -->
+    <section class="tab-content" id="pane-kassa" style="display:none">
+      <p class="muted">Snel afrekenen aan de balie. Bestellingen worden direct als <em>voldaan</em> geregistreerd.</p>
+      <div class="grid" style="grid-template-columns: 1.5fr 1fr; gap:18px; align-items:start">
+        <div>
+          <div class="admin-tabs" id="kassa-cat-tabs"></div>
+          <div class="kassa-grid" id="kassa-grid"></div>
+        </div>
+        <aside class="kassa-bon">
+          <h3 style="margin-top:0">💳 Kassa-bon</h3>
+          <ul class="kassa-bon__lines" id="kassa-lines"></ul>
+          <div class="order-total"><span>Totaal</span><span id="kassa-total">€ 0,00</span></div>
+          <button class="btn btn-primary btn-block" id="kassa-checkout">✅ Afrekenen</button>
+          <button class="btn btn-ghost btn-sm btn-block" id="kassa-clear" style="margin-top:6px">Bon wissen</button>
+        </aside>
+      </div>
+    </section>
+
+    <!-- MENU TAB -->
+    <section class="tab-content" id="pane-menu" style="display:none">
+      <div id="menu-editor"></div>
+    </section>
+
+    <!-- OVERVIEW TAB -->
+    <section class="tab-content" id="pane-overview" style="display:none">
+      <div class="row-between" style="margin-bottom:14px">
+        <div class="row" style="gap:6px">
+          <button class="admin-tab" data-overview-period="dag">Dag</button>
+          <button class="admin-tab is-active" data-overview-period="week">Week</button>
+          <button class="admin-tab" data-overview-period="maand">Maand</button>
+          <button class="admin-tab" data-overview-period="jaar">Jaar</button>
+        </div>
+        <button class="btn btn-yellow btn-sm" id="export-csv-btn">⬇️ Exporteer CSV</button>
+      </div>
+
+      <div class="admin-stats">
+        <div class="stat-card"><div class="stat-card__value" id="ov-count">0</div><div class="stat-card__label">Bestellingen</div></div>
+        <div class="stat-card"><div class="stat-card__value" id="ov-revenue">€ 0</div><div class="stat-card__label">Omzet</div></div>
+        <div class="stat-card"><div class="stat-card__value" id="ov-avg">€ 0</div><div class="stat-card__label">Gem. orderwaarde</div></div>
+        <div class="stat-card"><div class="stat-card__value" id="ov-items">0</div><div class="stat-card__label">Items verkocht</div></div>
+      </div>
+
+      <div class="chart-section">
+        <div class="chart-section__title">Aantal bestellingen</div>
+        <div class="chart-container"><canvas id="chart-orders"></canvas></div>
+      </div>
+      <div class="chart-section">
+        <div class="chart-section__title">Omzet (€)</div>
+        <div class="chart-container"><canvas id="chart-revenue"></canvas></div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0">🏆 Top producten</h3>
+        <div id="top-products"></div>
+      </div>
+    </section>
+
+    <!-- SETTINGS TAB -->
+    <section class="tab-content" id="pane-settings" style="display:none">
+      <div class="grid" style="grid-template-columns: 1fr 1fr; gap:16px">
+        <div class="card">
+          <h3 style="margin-top:0">🔑 Pincode wijzigen</h3>
+          <div class="field">
+            <label class="field__label">Nieuwe pincode (4–6 cijfers)</label>
+            <input id="new-pin" type="password" inputmode="numeric" maxlength="6">
+          </div>
+          <button class="btn btn-primary btn-sm" id="save-pin-btn">Pincode opslaan</button>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0">📦 Data beheren</h3>
+          <p class="muted" style="font-size:.9rem">Alle bestellingen staan in deze browser. Maak regelmatig een back-up via 'Exporteer CSV' op het Overzicht-tabblad.</p>
+          <div class="row" style="gap:6px">
+            <button class="btn btn-outline btn-sm" id="demo-btn">+ Demo-data</button>
+            <button class="btn btn-danger btn-sm" id="reset-orders-btn">Alle bestellingen wissen</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+</main>
+
+<!-- ITEM MODAL -->
+<div class="modal-overlay" id="item-modal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <button class="modal__close" id="close-item-modal" aria-label="Sluiten">×</button>
+    <h2 class="modal__title" id="item-modal-title">Nieuw item</h2>
+    <div class="field"><label class="field__label" for="item-name">Naam</label><input type="text" id="item-name" maxlength="80" placeholder="Bv. 4 bollen ijs"></div>
+    <div class="field"><label class="field__label" for="item-description">Beschrijving</label><input type="text" id="item-description" maxlength="200" placeholder="Korte tekst onder de naam"></div>
+    <div class="field"><label class="field__label" for="item-price">Prijs (in euro)</label><input type="number" id="item-price" step="0.10" min="0" max="999"></div>
+    <div class="field"><label class="field__label" for="item-category">Categorie</label><select id="item-category"></select></div>
+
+    <div class="field">
+      <label class="field__label">Wat kan de klant kiezen?</label>
+      <label class="checkbox-row"><input type="checkbox" id="item-configurable"><span>Smaken kiezen (zoals bij ijs — opent een keuze-modal)</span></label>
+      <div class="field" id="item-scoops-field" style="display:none; padding-left:28px; margin-bottom:0">
+        <label class="field__label">Aantal smaken te kiezen</label>
+        <input type="number" id="item-scoops" min="1" max="10" value="1">
+      </div>
+      <label class="checkbox-row"><input type="checkbox" id="item-has-slagroom"><span>Slagroom-keuze tonen (+ € 0,80)</span></label>
+      <label class="checkbox-row"><input type="checkbox" id="item-has-wafel"><span>Wafel-keuze tonen (+ € 2,50)</span></label>
+    </div>
+
+    <button class="btn btn-primary btn-block" id="save-item-btn">Opslaan</button>
+    <button class="btn btn-danger btn-block btn-sm" id="delete-item-btn" style="display:none; margin-top:8px">Item verwijderen</button>
+  </div>
+</div>
+
+<!-- CATEGORY MODAL -->
+<div class="modal-overlay" id="cat-modal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <button class="modal__close" id="close-cat-modal" aria-label="Sluiten">×</button>
+    <h2 class="modal__title" id="cat-modal-title">Nieuwe categorie</h2>
+    <div class="field"><label class="field__label" for="cat-name">Naam</label><input type="text" id="cat-name" maxlength="50" placeholder="Bv. Specials"></div>
+    <button class="btn btn-primary btn-block" id="save-cat-btn">Opslaan</button>
+    <button class="btn btn-danger btn-block btn-sm" id="delete-cat-btn" style="display:none; margin-top:8px">Categorie verwijderen</button>
+    <p class="muted" style="font-size:.85rem; margin-top:10px; text-align:center">Verwijderen kan alleen als de categorie leeg is.</p>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Footer (compact in admin) -->
+<footer class="site no-print" style="padding:18px 0">
+  <div class="container row-between">
+    <small style="opacity:.8">Pink Almond Personeel · © <span id="year"></span></small>
+    <small style="opacity:.7">v2 · gebouwd voor Mo</small>
+  </div>
+</footer>
+
+<!-- Chart.js (alleen voor admin) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="js/menu-data.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

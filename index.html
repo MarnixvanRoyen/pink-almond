@@ -379,19 +379,26 @@
     <symbol id="logo-pinkalmond" viewBox="0 0 360 70">
       <!-- "Pink " -->
       <text x="0" y="50" font-family="Fredoka, Quicksand, sans-serif" font-weight="700" font-size="50" fill="#f7c7d6">Pink</text>
-      <!-- inverted ice-cream "A" -->
-      <g transform="translate(125, 8)">
-        <!-- Bolletje ijs als horizontale balk van de A -->
-        <circle cx="22" cy="40" r="8" fill="#f5e9d3"/>
-        <!-- driehoekige cone (A vorm) -->
-        <path d="M22 4 L42 56 L2 56 Z" fill="#f4c430" stroke="#1d3a4a" stroke-width="2" stroke-linejoin="round"/>
-        <!-- waffle pattern -->
-        <path d="M8 22 L36 22 M10 32 L34 32 M14 42 L30 42 M16 50 L28 50
-                 M22 4 L8 56 M22 4 L36 56 M14 22 L22 56 M30 22 L22 56"
-              stroke="#1d3a4a" stroke-width="1.4" fill="none" opacity=".6"/>
+      <!-- Omgekeerd ijsje als A — zelfde stijl als #ic-cone, op schaal van de tekst -->
+      <g transform="translate(118, 0)">
+        <!-- Wafelhoorntje (cone met punt boven, A-vorm) -->
+        <path d="M20 10 L40 50 L0 50 Z"
+              fill="#f4c430" stroke="#1d3a4a" stroke-width="2" stroke-linejoin="round"/>
+        <!-- Wafelpatroon binnen de cone -->
+        <path d="M14 22 L26 22
+                 M10 32 L30 32
+                 M5 44 L35 44
+                 M20 10 L1 50
+                 M20 10 L39 50
+                 M14 22 L26 44
+                 M26 22 L14 44
+                 M20 10 L20 50"
+              stroke="#1d3a4a" stroke-width="1.4" fill="none" opacity=".5" stroke-linecap="round"/>
+        <!-- Bolletje ijs onder het hoorntje (omgekeerd ijsje!) -->
+        <circle cx="20" cy="60" r="10" fill="#f5e9d3" stroke="#1d3a4a" stroke-width="2"/>
       </g>
       <!-- "lmond" -->
-      <text x="172" y="50" font-family="Fredoka, Quicksand, sans-serif" font-weight="700" font-size="50" fill="#f5e9d3">lmond</text>
+      <text x="170" y="50" font-family="Fredoka, Quicksand, sans-serif" font-weight="700" font-size="50" fill="#f5e9d3">lmond</text>
     </symbol>
 
     <!-- mini cone icon for menu/sections -->
