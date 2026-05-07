@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*~
+
+# Originele camera-bestandsnamen (we gebruiken de hernoemde versies: mo.jpeg, gevel.jpeg, interieur.jpeg, menu-bord.jpeg)
+[A-F0-9][A-F0-9][A-F0-9][A-F0-9][A-F0-9][A-F0-9][A-F0-9][A-F0-9]-*.jpeg
+[A-F0-9][A-F0-9][A-F0-9][A-F0-9][A-F0-9][A-F0-9][A-F0-9][A-F0-9]-*.jpg
+
+# Tijdelijke bestanden
+*.log
+*.tmp
+node_modules/
